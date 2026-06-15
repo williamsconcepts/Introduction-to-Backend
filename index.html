@@ -1,257 +1,279 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Todo</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body>
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
     <main>
+      <header>
+        <h1>My Todo</h1>
 
-        <header>
-            <h1>My Todo</h1>
+        <div class="search-area">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search tasks..." />
+          </div>
 
-            <div class="search-area">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search tasks...">
-                </div>
+          <select>
+            <option>All</option>
+            <option>Work</option>
+            <option>Personal</option>
+            <option>Study</option>
+          </select>
+        </div>
+      </header>
 
-                <select>
-                    <option>All</option>
-                    <option>Work</option>
-                    <option>Personal</option>
-                    <option>Study</option>
-                </select>
-            </div>
-        </header>
+      <section class="task-form">
+        <input type="text" placeholder="What needs to be done?" />
 
-        <section class="task-form">
+        <button>Add Task</button>
+      </section>
 
-            <input
-                type="text"
-                placeholder="What needs to be done?"
-            >
+      <section class="task-controls">
+        <div class="tabs">
+          <a href="#" class="active">All Tasks</a>
+          <a href="#">Active</a>
+          <a href="#">Completed</a>
+        </div>
 
-            <button>Add Task</button>
+        <div class="sort">
+          Sort by: Created (Newest)
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </section>
 
-        </section>
+      <table id="todo">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
 
-        <section class="task-controls">
+            <th>Task</th>
+            <th>List</th>
+            <th>Due Date</th>
+            <th>Created</th>
+            <th>Starred</th>
+            <th></th>
+          </tr>
+        </thead>
 
-            <div class="tabs">
-                <a href="#" class="active">All Tasks</a>
-                <a href="#">Active</a>
-                <a href="#">Completed</a>
-            </div>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" /></td>
 
-            <div class="sort">
-                Sort by: Created (Newest)
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
+            <td>Design landing page</td>
 
-        </section>
+            <td>
+              <span class="badge work"> ● Work </span>
+            </td>
 
-        <table>
+            <td class="danger">
+              <i class="fa-regular fa-calendar"></i>
+              Today
+            </td>
 
-            <thead>
-                <tr>
-                    <th>
-                        <input type="checkbox">
-                    </th>
-                    <th>Task</th>
-                    <th>List</th>
-                    <th>Due Date</th>
-                    <th>Created</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
+            <td>2 minutes ago</td>
 
-            <tbody>
+            <td>
+              <i class="fa-regular fa-star"></i>
+            </td>
 
-                <tr>
-                    <td><input type="checkbox"></td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
 
-                    <td>Design landing page</td>
+          <tr>
+            <td><input type="checkbox" /></td>
 
-                    <td>
-                        <span class="badge work">
-                            ● Work
-                        </span>
-                    </td>
+            <td>Buy groceries</td>
 
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        Today
-                    </td>
+            <td>
+              <span class="badge shopping"> ● Shopping </span>
+            </td>
 
-                    <td>2 minutes ago</td>
+            <td class="danger">
+              <i class="fa-regular fa-calendar"></i>
+              Today
+            </td>
 
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-                    </td>
+            <td>15 minutes ago</td>
 
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
+            <td>
+              <i class="fa-regular fa-star"></i>
+            </td>
 
-                <tr>
-                    <td><input type="checkbox"></td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
 
-                    <td>Buy groceries</td>
+          <tr>
+            <td><input type="checkbox" /></td>
 
-                    <td>
-                        <span class="badge shopping">
-                            ● Shopping
-                        </span>
-                    </td>
+            <td>Prepare project presentation</td>
 
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        Today
-                    </td>
+            <td>
+              <span class="badge work"> ● Work </span>
+            </td>
 
-                    <td>15 minutes ago</td>
+            <td>
+              <i class="fa-regular fa-calendar"></i>
+              May 26
+            </td>
 
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-                    </td>
+            <td>1 hour ago</td>
 
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
+            <td>
+              <i class="fa-regular fa-star"></i>
+            </td>
 
-                <tr>
-                    <td><input type="checkbox"></td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
 
-                    <td>Prepare project presentation</td>
+          <tr class="completed">
+            <td>
+              <input type="checkbox" checked />
+            </td>
 
-                    <td>
-                        <span class="badge work">
-                            ● Work
-                        </span>
-                    </td>
+            <td>Read Atomic Habits</td>
 
-                    <td>
-                        <i class="fa-regular fa-calendar"></i>
-                        May 26
-                    </td>
+            <td>
+              <span class="badge personal"> ● Personal </span>
+            </td>
 
-                    <td>1 hour ago</td>
+            <td>
+              <i class="fa-regular fa-calendar"></i>
+              May 24
+            </td>
 
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-                    </td>
+            <td>2 days ago</td>
 
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
+            <td>
+              <i class="fa-solid fa-star starred"></i>
+            </td>
 
-                <tr class="completed">
-                    <td>
-                        <input type="checkbox" checked>
-                    </td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
 
-                    <td>Read Atomic Habits</td>
+          <tr class="completed">
+            <td>
+              <input type="checkbox" checked />
+            </td>
 
-                    <td>
-                        <span class="badge personal">
-                            ● Personal
-                        </span>
-                    </td>
+            <td>Go for a run</td>
 
-                    <td>
-                        <i class="fa-regular fa-calendar"></i>
-                        May 24
-                    </td>
+            <td>
+              <span class="badge personal"> ● Personal </span>
+            </td>
 
-                    <td>2 days ago</td>
+            <td>
+              <i class="fa-regular fa-calendar"></i>
+              May 23
+            </td>
 
-                    <td>
-                        <i class="fa-solid fa-star starred"></i>
-                    </td>
+            <td>3 days ago</td>
 
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
+            <td>
+              <i class="fa-regular fa-star"></i>
+            </td>
 
-                <tr class="completed">
-                    <td>
-                        <input type="checkbox" checked>
-                    </td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
 
-                    <td>Go for a run</td>
+          <tr>
+            <td><input type="checkbox" /></td>
 
-                    <td>
-                        <span class="badge personal">
-                            ● Personal
-                        </span>
-                    </td>
+            <td>Learn React</td>
 
-                    <td>
-                        <i class="fa-regular fa-calendar"></i>
-                        May 23
-                    </td>
+            <td>
+              <span class="badge study"> ● Study </span>
+            </td>
 
-                    <td>3 days ago</td>
+            <td>-</td>
 
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-                    </td>
+            <td>3 days ago</td>
 
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
+            <td>
+              <i class="fa-regular fa-star"></i>
+            </td>
 
-                <tr>
-                    <td><input type="checkbox"></td>
+            <td>
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-                    <td>Learn React</td>
+      <footer>
+        <p>2 of 6 tasks completed</p>
 
-                    <td>
-                        <span class="badge study">
-                            ● Study
-                        </span>
-                    </td>
-
-                    <td>-</td>
-
-                    <td>3 days ago</td>
-
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-                    </td>
-
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-        <footer>
-
-            <p>2 of 6 tasks completed</p>
-
-            <a href="#">Clear completed</a>
-
-        </footer>
-
+        <a href="#">Clear completed</a>
+      </footer>
     </main>
+    <script>
+      let todos = [
+        {
+          id: 1,
+          task: "Laundary",
+          list: "Personal",
+          dueDate: "2026-06-16",
+          created: "2026-06-16 00:00",
+          starred: false,
+        },
+      ];
 
-</body>
+      const todo = document.querySelector("#todo tbody");
+
+      todos.forEach(function (items) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+                <td>
+                <input type="checkbox">
+                </td>
+
+                    <td>${items.task}</td>
+
+                    <td>
+                        <span class="badge work">
+                            ● ${items.list}
+                        </span>
+                    </td>
+
+                    <td class="danger">
+                        <i class="fa-regular fa-calendar"></i>
+                        ${items.dueDate}
+                    </td>
+
+                    <td>${items.created}</td>
+
+                    <td>
+                        <i class="fa-regular fa-star"></i>
+
+                    </td>
+
+                    <td>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </td>
+        `;
+        todo.appendChild(tr);
+      });
+    </script>
+  </body>
 </html>
