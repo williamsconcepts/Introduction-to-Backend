@@ -63,7 +63,7 @@
             <th>Due Date</th>
             <th>Created</th>
             <th>Starred</th>
-            <th></th>
+            <th>Edit/Delete</th>
           </tr>
         </thead>
 
@@ -87,101 +87,46 @@
 
 <script>
 
-let todos = [
-    {
-    id: 1,
-    task: "Laundary",
-    list: "Personal",
-    dueDate: "2026-06-16",
-    created: "2026-06-16 00:00",
-    starred: false,
-    },
-     {
-    id: 2,
-    task: "Macbook Pro",
-    list: "Study",
-    dueDate: "2026-04-16",
-    created: "2026-06-16 00:00",
-    starred: false,
-    },
-     {
-    id: 3,
-    task: "Bag Pack",
-    list: "Personal",
-    dueDate: "2026-06-18",
-    created: "2026-06-16 00:00",
-    starred: false,
-    }
-];
+let todos = [];
 
-const todo = document.querySelector("#todo tbody");
+const todoTable = document.querySelector("#todo tbody");
+const taskInput = document.querySelector("#taskItem");
 
 
+// creating Todo items
 function createItems() {
-    const task= document.querySelector("#taskItem")?.value.trim();
+  
+    const task = taskInput.value.trim();
 
     if (!task) {
         return;
     }
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-                <td>
-                <input type="checkbox">
-                </td>
+    todos.push({
+        id: "",
+        task: task,
+        list: "work",
+        dueDate: "2026-04-03",
+        created: new Date(),
+        starred: false
+    });
 
-                    <td>${task}</td>
+    taskInput.value = "";
 
-                    <td>
-                        <span class="badge work">
-                            ● Work
-                        </span>
-                    </td>
-
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        2026-04-03
-                    </td>
-
-                    <td>2026-04-03</td>
-
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-
-                    </td>
-
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-        `;
-        todo.appendChild(tr);
-
-   
+    renderItems();
 }
-
-function editItems() {
-    
-}
-
-function updateItems() {
-    
-}
-
-function deleteItems() {
-    
-}
-
 
 // Loading Items
+function renderItems() {
+    todoTable.innerHTML = "";
 
-function loadItems() {
-    todos.forEach(function (items) {
+    todos.forEach(function (items, index) {
     const tr = document.createElement("tr");
 
         tr.innerHTML = `
-                <td>
-                <input type="checkbox">
-                </td>
+                    <td>
+                    <input type="checkbox">
+                    </td>
 
                     <td>${items.task}</td>
 
@@ -204,14 +149,29 @@ function loadItems() {
                     </td>
 
                     <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                        <button class="deleteBtn" onclick="deleteItems(${index})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${index})">edit</button> 
                     </td>
+        
         `;
-        todo.appendChild(tr);
+        todoTable.appendChild(tr);
     });
 }
 
-loadItems();
+
+function deleteItems(index) {
+  todos.splice(index, 1);
+  renderItems();
+}
+
+
+function editItems(index) {
+  const updateTask = prompt(
+        "Edit task", todos[index].task
+    );
+  todos[index].task = updateTask.trim();
+  renderItems()
+}
 
     </script>
   </body>
