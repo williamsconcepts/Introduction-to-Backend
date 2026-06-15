@@ -59,7 +59,7 @@ main {
 
                 input {
                     width: 100%;
-                    border: none;
+                    border: var(--border-light);
                     outline: none;
                     padding: 16px 0;
                     font-size: 16px;
