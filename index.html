@@ -102,6 +102,7 @@ function createItems() {
         return;
     }
 
+    // Adding the text default input, into the the items array
     todos.push({
         id: "",
         task: task,
@@ -111,18 +112,26 @@ function createItems() {
         starred: false
     });
 
+    // clearing out the input element and wait for next
     taskInput.value = "";
 
+    // rending the items in the array and rendering the DOM
     renderItems();
 }
 
 // Loading Items
 function renderItems() {
+    // clears the todo table element to recieve a fresh set of tr children element
     todoTable.innerHTML = "";
 
+    // looping through items in the array
     todos.forEach(function (items, index) {
+        // creating an element for each item in the array
     const tr = document.createElement("tr");
 
+
+        // Injecting HTML element content into newly created element and assigns a delete and edit
+        // button for each item
         tr.innerHTML = `
                     <td>
                     <input type="checkbox">
@@ -154,6 +163,7 @@ function renderItems() {
                     </td>
         
         `;
+        // Appending each of the created "tr" elements to the "tbody" parent
         todoTable.appendChild(tr);
     });
 }
