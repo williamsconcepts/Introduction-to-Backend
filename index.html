@@ -33,9 +33,9 @@
       </header>
 
       <section class="task-form">
-        <input type="text" placeholder="What needs to be done?" />
+        <input id="taskItem" type="text" placeholder="What needs to be done?" />
 
-        <button>Add Task</button>
+        <button id="addBtn" onclick="createItems()">Add Task</button>
       </section>
 
       <section class="task-controls">
@@ -68,156 +68,6 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td><input type="checkbox" /></td>
-
-            <td>Design landing page</td>
-
-            <td>
-              <span class="badge work"> ● Work </span>
-            </td>
-
-            <td class="danger">
-              <i class="fa-regular fa-calendar"></i>
-              Today
-            </td>
-
-            <td>2 minutes ago</td>
-
-            <td>
-              <i class="fa-regular fa-star"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
-
-          <tr>
-            <td><input type="checkbox" /></td>
-
-            <td>Buy groceries</td>
-
-            <td>
-              <span class="badge shopping"> ● Shopping </span>
-            </td>
-
-            <td class="danger">
-              <i class="fa-regular fa-calendar"></i>
-              Today
-            </td>
-
-            <td>15 minutes ago</td>
-
-            <td>
-              <i class="fa-regular fa-star"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
-
-          <tr>
-            <td><input type="checkbox" /></td>
-
-            <td>Prepare project presentation</td>
-
-            <td>
-              <span class="badge work"> ● Work </span>
-            </td>
-
-            <td>
-              <i class="fa-regular fa-calendar"></i>
-              May 26
-            </td>
-
-            <td>1 hour ago</td>
-
-            <td>
-              <i class="fa-regular fa-star"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
-
-          <tr class="completed">
-            <td>
-              <input type="checkbox" checked />
-            </td>
-
-            <td>Read Atomic Habits</td>
-
-            <td>
-              <span class="badge personal"> ● Personal </span>
-            </td>
-
-            <td>
-              <i class="fa-regular fa-calendar"></i>
-              May 24
-            </td>
-
-            <td>2 days ago</td>
-
-            <td>
-              <i class="fa-solid fa-star starred"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
-
-          <tr class="completed">
-            <td>
-              <input type="checkbox" checked />
-            </td>
-
-            <td>Go for a run</td>
-
-            <td>
-              <span class="badge personal"> ● Personal </span>
-            </td>
-
-            <td>
-              <i class="fa-regular fa-calendar"></i>
-              May 23
-            </td>
-
-            <td>3 days ago</td>
-
-            <td>
-              <i class="fa-regular fa-star"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
-
-          <tr>
-            <td><input type="checkbox" /></td>
-
-            <td>Learn React</td>
-
-            <td>
-              <span class="badge study"> ● Study </span>
-            </td>
-
-            <td>-</td>
-
-            <td>3 days ago</td>
-
-            <td>
-              <i class="fa-regular fa-star"></i>
-            </td>
-
-            <td>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </td>
-          </tr>
         </tbody>
       </table>
 
@@ -227,22 +77,107 @@
         <a href="#">Clear completed</a>
       </footer>
     </main>
-    <script>
-      let todos = [
-        {
-          id: 1,
-          task: "Laundary",
-          list: "Personal",
-          dueDate: "2026-06-16",
-          created: "2026-06-16 00:00",
-          starred: false,
-        },
-      ];
 
-      const todo = document.querySelector("#todo tbody");
 
-      todos.forEach(function (items) {
-        const tr = document.createElement("tr");
+<!-- 
+=====================================
+============ DOM Manipulation =======
+=====================================
+-->
+
+<script>
+
+let todos = [
+    {
+    id: 1,
+    task: "Laundary",
+    list: "Personal",
+    dueDate: "2026-06-16",
+    created: "2026-06-16 00:00",
+    starred: false,
+    },
+     {
+    id: 2,
+    task: "Macbook Pro",
+    list: "Study",
+    dueDate: "2026-04-16",
+    created: "2026-06-16 00:00",
+    starred: false,
+    },
+     {
+    id: 3,
+    task: "Bag Pack",
+    list: "Personal",
+    dueDate: "2026-06-18",
+    created: "2026-06-16 00:00",
+    starred: false,
+    }
+];
+
+const todo = document.querySelector("#todo tbody");
+
+
+function createItems() {
+    const task= document.querySelector("#taskItem")?.value.trim();
+
+    if (!task) {
+        return;
+    }
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+                <td>
+                <input type="checkbox">
+                </td>
+
+                    <td>${task}</td>
+
+                    <td>
+                        <span class="badge work">
+                            ● Work
+                        </span>
+                    </td>
+
+                    <td class="danger">
+                        <i class="fa-regular fa-calendar"></i>
+                        2026-04-03
+                    </td>
+
+                    <td>2026-04-03</td>
+
+                    <td>
+                        <i class="fa-regular fa-star"></i>
+
+                    </td>
+
+                    <td>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </td>
+        `;
+        todo.appendChild(tr);
+
+   
+}
+
+function editItems() {
+    
+}
+
+function updateItems() {
+    
+}
+
+function deleteItems() {
+    
+}
+
+
+// Loading Items
+
+function loadItems() {
+    todos.forEach(function (items) {
+    const tr = document.createElement("tr");
+
         tr.innerHTML = `
                 <td>
                 <input type="checkbox">
@@ -273,7 +208,11 @@
                     </td>
         `;
         todo.appendChild(tr);
-      });
+    });
+}
+
+loadItems();
+
     </script>
   </body>
 </html>
