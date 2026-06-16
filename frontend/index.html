@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Todo</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>My Todo</h1>
+
+        <div class="search-area">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="search" type="text" placeholder="Search tasks..." />
+            <button class="editBtn" onclick="searchTask()">Search</button>
+          </div>
+
+          <select>
+            <option>All</option>
+            <option>Work</option>
+            <option>Personal</option>
+            <option>Study</option>
+          </select>
+        </div>
+      </header>
+
+      <section class="task-form">
+        <input id="taskItem" type="text" placeholder="What needs to be done?" />
+
+        <button id="addBtn" onclick="createItems()">Add Task</button>
+      </section>
+
+      <section class="task-controls">
+        <div class="tabs">
+          <a href="#" class="active">All Tasks</a>
+          <a href="#">Active</a>
+          <a href="#">Completed</a>  
+        </div>
+
+        <div class="sort">
+          Sort by: Created (Newest)
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </section>
+
+      <table id="todo">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+
+            <th>Task</th>
+            <th>List</th>
+            <th>Due Date</th>
+            <th>Created</th>
+            <th>Starred</th>
+            <th>Edit/Delete</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            
+        </tbody>
+      </table>
+
+      <footer>
+        <p>2 of 6 tasks completed</p>
+
+        <a href="#">Clear completed</a>
+      </footer>
+    </main>
+
+
+<!-- 
+=====================================
+============ DOM Rendering =======
+=====================================
+-->
+<script src="script.js" defer></script>
+
+  </body>
+</html>
