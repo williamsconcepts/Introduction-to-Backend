@@ -20,7 +20,8 @@
         <div class="search-area">
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search tasks..." />
+            <input id="search" type="text" placeholder="Search tasks..." />
+            <button class="editBtn" onclick="searchTask()">Search</button>
           </div>
 
           <select>
@@ -90,12 +91,13 @@
 
 let todos = [];
 
+const url = "http://localhost:3000/";
 const todoTable = document.querySelector("#todo tbody");
 const taskInput = document.querySelector("#taskItem");
 
 
 // creating Todo items
-function createItems() {
+async function createItems() {
   
     const task = taskInput.value.trim();
 
@@ -104,14 +106,24 @@ function createItems() {
     }
 
     // Adding the text default input, into the the items array
-    todos.push({
-        id: "",
+
+    const payload = {
+        id: Math.floor(Math.random()),
         task: task,
         list: "work",
         dueDate: "2026-04-03",
         created: new Date().toLocaleDateString(),
         starred: false
+    };
+
+    const request = await fetch(url + "todo", {
+      method: "POST",
+      body:JSON.stringify(payload),
+      headers:{"Content-Type": "application/json"}
     });
+
+    const response = await request.json()
+    console.log(response)
 
     // clearing out the input element and wait for next
     taskInput.value = "";
@@ -121,18 +133,20 @@ function createItems() {
 }
 
 // Loading Items
-function loadItems() {
-    // clears the todo table element to recieve a fresh set of tr children element
+async function loadItems() {
+
+    const request = await fetch(url);
+
+    todos = await request.json();
+
+    console.log(todos);
+
     todoTable.innerHTML = "";
 
-    // looping through items in the array
-    todos.forEach(function (items, index) {
-        // creating an element for each item in the array
-    const tr = document.createElement("tr");
+    todos.forEach(function (items, id) {
 
+        const tr = document.createElement("tr");
 
-        // Injecting HTML element content into newly created element and assigns a delete and edit
-        // button for each item
         tr.innerHTML = `
                     <td>
                     <input type="checkbox">
@@ -159,39 +173,108 @@ function loadItems() {
                     </td>
 
                     <td>
-                        <button class="deleteBtn" onclick="deleteItems(${index})">delete</button> 
-                         <button class="editBtn" onclick="editItems(${index})">edit</button> 
+                        <button class="deleteBtn" onclick="deleteItems(${items.id})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${items.id})">edit</button> 
                     </td>
-        
         `;
-        // Appending each of the created "tr" elements to the "tbody" parent
+
         todoTable.appendChild(tr);
     });
 }
 
+async function deleteItems(id) {
+  const request = await fetch(url + "todo/:id", {
+      method: "DELETE",
+    });
 
-function deleteItems(index) {
-  todos.splice(index, 1);
+    const response = await request.json()
+    console.log(response)
   loadItems();
 }
 
 
-function editItems(index) {
+async function editItems(id) {
+
+  const todo = todos.find(item => item.id == id);
+
+  if (!todo) return;
+  
     // opens prompt with current task value
   const updateTask = prompt(
-        "Edit task", todos[index].task
+        "Do you want to Edit task?", todo.task
     );
 
-    // if you entered an empty value, do nothing
-    if (updateTask.trim() === "") {
-        return;
+    if (updateTask.trim() === "") return;
+    
+    try {
+      const request = await fetch(`${url}todo/${id}`,{
+      method: "PATCH",
+      headers:{"Content-Type": "application/json"},
+      body:JSON.stringify({
+        task: updateTask.trim()
+      })
+});
+
+  const response = await request.json();
+  console.log(response);
+
+     loadItems()
+    } catch (error) {
+      console.log(error)
     }
 
-    // else replace old task value
-  todos[index].task = updateTask.trim();
-
-  loadItems()
+ 
 }
+
+async function searchTask(item, index) {
+
+  const search = document.getElementById("search").value.trim();
+
+  if (!search) return;
+
+  const request = await fetch(url + "todo?task=" + search);
+
+  const response = await request.json();
+  console.log(response);
+
+  const tr = document.createElement("tr");
+
+   todoTable.innerHTML = "";
+
+        tr.innerHTML = `
+                    <td>
+                    <input type="checkbox">
+                    </td>
+
+                    <td>${response.task}</td>
+
+                    <td>
+                        <span class="badge work">
+                            ● ${response.list}
+                        </span>
+                    </td>
+
+                    <td class="danger">
+                        <i class="fa-regular fa-calendar"></i>
+                        ${response.dueDate}
+                    </td>
+
+                    <td>${response.created}</td>
+
+                    <td>
+                        <i class="fa-regular fa-star"></i>
+
+                    </td>
+
+                    <td>
+                        <button class="deleteBtn" onclick="deleteItems(${index})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${index})">edit</button> 
+                    </td>
+        `;
+
+        todoTable.appendChild(tr);
+};
+  
 
 loadItems()
     </script>
