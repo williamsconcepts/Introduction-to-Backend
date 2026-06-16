@@ -42,7 +42,7 @@
         <div class="tabs">
           <a href="#" class="active">All Tasks</a>
           <a href="#">Active</a>
-          <a href="#">Completed</a>
+          <a href="#">Completed</a>  
         </div>
 
         <div class="sort">
@@ -63,11 +63,12 @@
             <th>Due Date</th>
             <th>Created</th>
             <th>Starred</th>
-            <th></th>
+            <th>Edit/Delete</th>
           </tr>
         </thead>
 
         <tbody>
+            
         </tbody>
       </table>
 
@@ -81,107 +82,61 @@
 
 <!-- 
 =====================================
-============ DOM Manipulation =======
+============ DOM Rendering =======
 =====================================
 -->
 
 <script>
 
-let todos = [
-    {
-    id: 1,
-    task: "Laundary",
-    list: "Personal",
-    dueDate: "2026-06-16",
-    created: "2026-06-16 00:00",
-    starred: false,
-    },
-     {
-    id: 2,
-    task: "Macbook Pro",
-    list: "Study",
-    dueDate: "2026-04-16",
-    created: "2026-06-16 00:00",
-    starred: false,
-    },
-     {
-    id: 3,
-    task: "Bag Pack",
-    list: "Personal",
-    dueDate: "2026-06-18",
-    created: "2026-06-16 00:00",
-    starred: false,
-    }
-];
+let todos = [];
 
-const todo = document.querySelector("#todo tbody");
+const todoTable = document.querySelector("#todo tbody");
+const taskInput = document.querySelector("#taskItem");
 
 
+// creating Todo items
 function createItems() {
-    const task= document.querySelector("#taskItem")?.value.trim();
+  
+    const task = taskInput.value.trim();
 
     if (!task) {
         return;
     }
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-                <td>
-                <input type="checkbox">
-                </td>
+    // Adding the text default input, into the the items array
+    todos.push({
+        id: "",
+        task: task,
+        list: "work",
+        dueDate: "2026-04-03",
+        created: new Date().toLocaleDateString(),
+        starred: false
+    });
 
-                    <td>${task}</td>
+    // clearing out the input element and wait for next
+    taskInput.value = "";
 
-                    <td>
-                        <span class="badge work">
-                            ● Work
-                        </span>
-                    </td>
-
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        2026-04-03
-                    </td>
-
-                    <td>2026-04-03</td>
-
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-
-                    </td>
-
-                    <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </td>
-        `;
-        todo.appendChild(tr);
-
-   
+    // rending the items in the array on the DOM
+    loadItems();
 }
-
-function editItems() {
-    
-}
-
-function updateItems() {
-    
-}
-
-function deleteItems() {
-    
-}
-
 
 // Loading Items
-
 function loadItems() {
-    todos.forEach(function (items) {
+    // clears the todo table element to recieve a fresh set of tr children element
+    todoTable.innerHTML = "";
+
+    // looping through items in the array
+    todos.forEach(function (items, index) {
+        // creating an element for each item in the array
     const tr = document.createElement("tr");
 
+
+        // Injecting HTML element content into newly created element and assigns a delete and edit
+        // button for each item
         tr.innerHTML = `
-                <td>
-                <input type="checkbox">
-                </td>
+                    <td>
+                    <input type="checkbox">
+                    </td>
 
                     <td>${items.task}</td>
 
@@ -204,15 +159,41 @@ function loadItems() {
                     </td>
 
                     <td>
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                        <button class="deleteBtn" onclick="deleteItems(${index})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${index})">edit</button> 
                     </td>
+        
         `;
-        todo.appendChild(tr);
+        // Appending each of the created "tr" elements to the "tbody" parent
+        todoTable.appendChild(tr);
     });
 }
 
-loadItems();
 
+function deleteItems(index) {
+  todos.splice(index, 1);
+  loadItems();
+}
+
+
+function editItems(index) {
+    // opens prompt with current task value
+  const updateTask = prompt(
+        "Edit task", todos[index].task
+    );
+
+    // if you entered an empty value, do nothing
+    if (updateTask.trim() === "") {
+        return;
+    }
+
+    // else replace old task value
+  todos[index].task = updateTask.trim();
+
+  loadItems()
+}
+
+loadItems()
     </script>
   </body>
 </html>

@@ -233,6 +233,30 @@ main {
         color: #fbbf24;
     }
 
+     .deleteBtn {
+            width: 100px;
+            padding: 8px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: red;
+            color: var(--bg);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .editBtn {
+            width: 100px;
+            padding: 8px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--primary-color);
+            color: var(--bg);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
     footer {
         display: flex;
         justify-content: space-between;
