@@ -17,7 +17,6 @@ async function createItems() {
     }
 
     // Adding the text default input, into the the items array
-
     const payload = {
         id: Math.floor(Math.random()),
         task: task,
@@ -27,6 +26,7 @@ async function createItems() {
         starred: false
     };
 
+    
     const request = await fetch(url + "todo", {
       method: "POST",
       body:JSON.stringify(payload),
@@ -54,7 +54,7 @@ async function loadItems() {
 
     todoTable.innerHTML = "";
 
-    todos.forEach(function (items, id) {
+    todos.forEach(function (item, id) {
 
         const tr = document.createElement("tr");
 
@@ -63,20 +63,20 @@ async function loadItems() {
                     <input type="checkbox">
                     </td>
 
-                    <td>${items.task}</td>
+                    <td>${item.task}</td>
 
                     <td>
                         <span class="badge work">
-                            ● ${items.list}
+                            ● ${item.list}
                         </span>
                     </td>
 
                     <td class="danger">
                         <i class="fa-regular fa-calendar"></i>
-                        ${items.dueDate}
+                        ${item.dueDate}
                     </td>
 
-                    <td>${items.created}</td>
+                    <td>${item.created}</td>
 
                     <td>
                         <i class="fa-regular fa-star"></i>
@@ -84,8 +84,8 @@ async function loadItems() {
                     </td>
 
                     <td>
-                        <button class="deleteBtn" onclick="deleteItems(${items.id})">delete</button> 
-                         <button class="editBtn" onclick="editItems(${items.id})">edit</button> 
+                        <button class="deleteBtn" onclick="deleteItems(${item.id})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${item.id})">edit</button> 
                     </td>
         `;
 
@@ -94,6 +94,8 @@ async function loadItems() {
 }
 
 async function deleteItems(id) {
+
+    //  Implement the delete feature by connecting the UI to the new backend endpoint.
   const request = await fetch(url + "todo/:id", {
       method: "DELETE",
     });
@@ -117,6 +119,7 @@ async function editItems(id) {
 
     if (updateTask.trim() === "") return;
     
+   // Integrate the existing backend PATCH endpoint into the frontend to enable editing.
     try {
       const request = await fetch(`${url}todo/${id}`,{
       method: "PATCH",
@@ -178,8 +181,8 @@ async function searchTask(item, index) {
                     </td>
 
                     <td>
-                        <button class="deleteBtn" onclick="deleteItems(${index})">delete</button> 
-                         <button class="editBtn" onclick="editItems(${index})">edit</button> 
+                        <button class="deleteBtn" onclick="deleteItems(${item.id})">delete</button> 
+                         <button class="editBtn" onclick="editItems(${item.id})">edit</button> 
                     </td>
         `;
 

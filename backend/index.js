@@ -68,8 +68,7 @@ app.delete('/todo/:id', (_req, res) => {
   const todo = todos.splice(res, 1);
  console.log(todo);
   return res.json({"message": "deleted"}) 
-})
-
+});
 
 
 app.use((_req, res) => {
