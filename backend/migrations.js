@@ -9,8 +9,11 @@ async function runMigrations() {
         table.increments('id').primary();
         table.string('task').notNullable();
         table.string('list').notNullable(); 
-        table.timestamp('created_at').defaultTo(db.fn.now());
-        table.timestamp('updated_at').defaultTo(db.fn.now());
+        table.timestamp('created').defaultTo(db.fn.now());
+        table.timestamp('dueDate').defaultTo(db.fn.now());
+        table.boolean('isActive').notNullable(); 
+        table.boolean('isCompleted').notNullable(); 
+        table.boolean('starred').notNullable();
       });
       console.log('Created table: todos table');
     } else {
@@ -25,3 +28,4 @@ async function runMigrations() {
 }
 
 runMigrations();
+

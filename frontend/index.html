@@ -42,13 +42,23 @@
       <section class="task-controls">
         <div class="tabs">
           <a href="#" class="active">All Tasks</a>
-          <a href="#">Active</a>
-          <a href="#">Completed</a>  
+          <a href="#" onclick="activeTask()" id="isActive">Active</a>
+          <a href="#" onclick="completedTask()" id="isCompleted">Completed</a>  
+         
+
         </div>
 
         <div class="sort">
-          Sort by: Created (Newest)
+      
           <i class="fa-solid fa-chevron-down"></i>
+           <button onclick="sortAsc()">
+            Sort by ASC
+          </button>
+
+          <button onclick="sortDesc()">
+            Sort by DESC
+          </button>
+
         </div>
       </section>
 

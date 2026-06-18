@@ -1,194 +1,300 @@
-
-
 let todos = [];
 
 const url = "http://localhost:3000/";
+
 const todoTable = document.querySelector("#todo tbody");
 const taskInput = document.querySelector("#taskItem");
 
+// =====================================
+// RENDER TODOS
+// =====================================
 
-// creating Todo items
-async function createItems() {
-  
-    const task = taskInput.value.trim();
+function renderTodos(data) {
+  todoTable.innerHTML = "";
 
-    if (!task) {
-        return;
-    }
+  data.forEach(item => {
+    const tr = document.createElement("tr");
 
-    // Adding the text default input, into the the items array
-    const payload = {
-        id: Math.floor(Math.random()),
-        task: task,
-        list: "work",
-        dueDate: "2026-04-03",
-        created: new Date().toLocaleDateString(),
-        starred: false
-    };
+    tr.innerHTML = `
+      <td>
+        <input type="checkbox" ${
+          item.isCompleted ? "checked" : ""
+        }>
+      </td>
 
-    
-    const request = await fetch(url + "todo", {
-      method: "POST",
-      body:JSON.stringify(payload),
-      headers:{"Content-Type": "application/json"}
-    });
+      <td>${item.task}</td>
 
-    const response = await request.json()
-    console.log(response)
+      <td>
+        <span class="badge work">
+          ● ${item.list}
+        </span>
+      </td>
 
-    // clearing out the input element and wait for next
-    taskInput.value = "";
+      <td class="danger">
+        <i class="fa-regular fa-calendar"></i>
+        ${item.dueDate}
+      </td>
 
-    // rending the items in the array on the DOM
-    loadItems();
+      <td>${item.created}</td>
+
+      <td>
+        ${
+          item.starred
+            ? "⭐"
+            : '<i class="fa-regular fa-star"></i>'
+        }
+      </td>
+
+      <td>
+        <button
+          class="deleteBtn"
+          onclick="deleteItems(${item.id})"
+        >
+          delete
+        </button>
+
+        <button
+          class="editBtn"
+          onclick="editItems(${item.id})"
+        >
+          edit
+        </button>
+      </td>
+    `;
+
+    todoTable.appendChild(tr);
+  });
 }
 
-// Loading Items
-async function loadItems() {
+// =====================================
+// LOAD ALL TODOS
+// =====================================
 
+async function loadItems() {
+  try {
     const request = await fetch(url);
 
     todos = await request.json();
 
-    console.log(todos);
-
-    todoTable.innerHTML = "";
-
-    todos.forEach(function (item, id) {
-
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-                    <td>
-                    <input type="checkbox">
-                    </td>
-
-                    <td>${item.task}</td>
-
-                    <td>
-                        <span class="badge work">
-                            ● ${item.list}
-                        </span>
-                    </td>
-
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        ${item.dueDate}
-                    </td>
-
-                    <td>${item.created}</td>
-
-                    <td>
-                        <i class="fa-regular fa-star"></i>
-
-                    </td>
-
-                    <td>
-                        <button class="deleteBtn" onclick="deleteItems(${item.id})">delete</button> 
-                         <button class="editBtn" onclick="editItems(${item.id})">edit</button> 
-                    </td>
-        `;
-
-        todoTable.appendChild(tr);
-    });
+    renderTodos(todos);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+// =====================================
+// CREATE TODO
+// =====================================
+
+async function createItems() {
+  const task = taskInput.value.trim();
+
+  if (!task) return;
+
+  const payload = {
+    task,
+    list: "work",
+    dueDate: new Date().toLocaleDateString(),
+    created: new Date().toLocaleDateString(),
+    isCompleted: true,
+    isActive: true,
+    starred: false,
+  };
+
+  try {
+    const request = await fetch(url + "todo", {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const response = await request.json();
+
+    console.log(response);
+
+    taskInput.value = "";
+
+    loadItems();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// =====================================
+// DELETE
+// =====================================
 
 async function deleteItems(id) {
-
-    //  Implement the delete feature by connecting the UI to the new backend endpoint.
-  const request = await fetch(url + "todo/:id", {
-      method: "DELETE",
-    });
-
-    const response = await request.json()
-    console.log(response)
-  loadItems();
-}
-
-
-async function editItems(id) {
-
-  const todo = todos.find(item => item.id == id);
-
-  if (!todo) return;
-  
-    // opens prompt with current task value
-  const updateTask = prompt(
-        "Do you want to Edit task?", todo.task
+  try {
+    const request = await fetch(
+      `${url}todo/${id}`,
+      {
+        method: "DELETE",
+      }
     );
 
-    if (updateTask.trim() === "") return;
-    
-   // Integrate the existing backend PATCH endpoint into the frontend to enable editing.
-    try {
-      const request = await fetch(`${url}todo/${id}`,{
-      method: "PATCH",
-      headers:{"Content-Type": "application/json"},
-      body:JSON.stringify({
-        task: updateTask.trim()
-      })
-});
+    const response = await request.json();
 
-  const response = await request.json();
-  console.log(response);
+    console.log(response);
 
-     loadItems()
-    } catch (error) {
-      console.log(error)
-    }
-
- 
+    loadItems();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-async function searchTask(item, index) {
+// =====================================
+// EDIT TASK
+// =====================================
 
-  const search = document.getElementById("search").value.trim();
+async function editItems(id) {
+  const todo = todos.find(
+    item => item.id == id
+  );
 
-  if (!search) return;
+  if (!todo) return;
 
-  const request = await fetch(url + "todo?task=" + search);
+  const updatedTask = prompt(
+    "Edit task",
+    todo.task
+  );
 
-  const response = await request.json();
-  console.log(response);
+  if (
+    !updatedTask ||
+    updatedTask.trim() === ""
+  ) {
+    return;
+  }
 
-  const tr = document.createElement("tr");
+  try {
+    const request = await fetch(
+      `${url}todo/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          task: updatedTask.trim(),
+        }),
+      }
+    );
 
-   todoTable.innerHTML = "";
+    const response =
+      await request.json();
 
-        tr.innerHTML = `
-                    <td>
-                    <input type="checkbox">
-                    </td>
+    console.log(response);
 
-                    <td>${response.task}</td>
+    loadItems();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-                    <td>
-                        <span class="badge work">
-                            ● ${response.list}
-                        </span>
-                    </td>
+// =====================================
+// SEARCH
+// =====================================
 
-                    <td class="danger">
-                        <i class="fa-regular fa-calendar"></i>
-                        ${response.dueDate}
-                    </td>
+async function searchTask() {
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .trim();
 
-                    <td>${response.created}</td>
+  try {
+    const request = await fetch(
+      `${url}todo?task=${search}`
+    );
 
-                    <td>
-                        <i class="fa-regular fa-star"></i>
+    const response =
+      await request.json();
 
-                    </td>
+    renderTodos(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-                    <td>
-                        <button class="deleteBtn" onclick="deleteItems(${item.id})">delete</button> 
-                         <button class="editBtn" onclick="editItems(${item.id})">edit</button> 
-                    </td>
-        `;
+// =====================================
+// COMPLETED TASKS
+// =====================================
 
-        todoTable.appendChild(tr);
-};
-  
+async function completedTask() {
+  try {
+    const request = await fetch(
+      `${url}todo?completed=1`
+    );
 
-loadItems()
-    
+    const response =
+      await request.json();
+
+    renderTodos(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// =====================================
+// ACTIVE TASKS
+// =====================================
+
+async function activeTask() {
+  try {
+    const request = await fetch(
+      `${url}todo?active=1`
+    );
+
+    const response =
+      await request.json();
+
+    renderTodos(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// =====================================
+// SORT ASCENDING
+// =====================================
+
+async function sortAsc() {
+  try {
+    const request = await fetch(
+      `${url}todo?sort=asc`
+    );
+
+    const response =
+      await request.json();
+
+    renderTodos(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// =====================================
+// SORT DESCENDING
+// =====================================
+
+async function sortDesc() {
+  try {
+    const request = await fetch(
+      `${url}todo?sort=desc`
+    );
+
+    const response =
+      await request.json();
+
+    renderTodos(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+loadItems();
